@@ -1,0 +1,91 @@
+import { StandingsView } from "@/components/StandingsView";
+import type { SeasonOption } from "@/components/SeasonSelect";
+import { getAvailableSeasons, getGamesForSeason } from "@/lib/games";
+import { currentSeasonId, formatSeason } from "@/lib/seasons";
+import { computeRankDiff, computeStandings, groupByDivision } from "@/lib/standings";
+import { teamsForSeason } from "@/lib/teams";
+
+interface Props {
+  seasonId: number;
+  embed?: boolean;
+}
+
+// Server component shared by every route: loads one season's games plus the
+// list of seasons for the dropdown, and renders the page shell. The embed
+// variant drops the explanatory prose so it fits in a sidebar.
+export async function StandingsPage({ seasonId, embed = false }: Props) {
+  const [games, seasons] = await Promise.all([getGamesForSeason(seasonId), getAvailableSeasons()]);
+  const current = currentSeasonId();
+
+  // A season URL we don't have data for still gets listed, so the dropdown
+  // always shows what the page is displaying.
+  if (!seasons.includes(seasonId)) seasons.push(seasonId);
+  seasons.sort((a, b) => b - a);
+
+  const base = embed ? "/embed" : "";
+  const seasonOptions: SeasonOption[] = seasons.map((id) => ({
+    id,
+    label: id === current ? `${formatSeason(id)} (current)` : formatSeason(id),
+    href: id === current ? base || "/" : `${base}/season/${id}`,
+  }));
+
+  const teams = teamsForSeason(seasonId);
+  const trueStandings = groupByDivision(computeStandings(games, "true", teams));
+  const realStandings = groupByDivision(computeStandings(games, "real", teams));
+  const diffStandings = computeRankDiff(games, teams);
+
+  const seasonMeta =
+    games.length === 0
+      ? `${formatSeason(seasonId)} season · no games yet`
+      : `${formatSeason(seasonId)} season · ${games.length.toLocaleString()} games`;
+
+  return (
+    <div className={embed ? "embed" : undefined}>
+      <div className="page">
+        <header className="masthead">
+          {embed ? (
+            <h1>
+              True NHL Standings ·{" "}
+              <a href="https://truenhlstandings.com" style={{ fontSize: "0.6em", color: "var(--muted)" }}>
+                truenhlstandings.com
+              </a>
+            </h1>
+          ) : (
+            <>
+              <h1>True NHL Standings</h1>
+              <p>
+                The NHL awards <strong>2 points for any win</strong> and{" "}
+                <strong>1 point for an overtime or shootout loss</strong> — so two
+                different teams can lose the same number of games and end up with a
+                very different record. True NHL Standings recalculates the whole
+                league using a point system where a regulation win is worth more
+                than squeaking out extra time, and two losses never add up to more
+                than one win: <strong>3 / 2 / 1 / 0</strong> for a regulation win,
+                OT/SO win, OT/SO loss, and regulation loss.
+              </p>
+            </>
+          )}
+          <p className="season-meta">{seasonMeta}</p>
+        </header>
+
+        <StandingsView
+          trueStandings={trueStandings}
+          realStandings={realStandings}
+          diffStandings={diffStandings}
+          gamesPlayed={games.length}
+          seasonId={seasonId}
+          seasonOptions={seasonOptions}
+        />
+
+        {!embed && (
+          <p className="footer-note">
+            Game data from the NHL. Standings are recomputed from every final
+            score of the season, not adjusted from the NHL's own standings — so
+            the "Real" view here should match nhl.com, and the "True" view shows
+            what the table looks like under a stricter point system.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}

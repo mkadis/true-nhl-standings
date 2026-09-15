@@ -1,0 +1,48 @@
+// True NHL Standings — database schema
+//
+// Design choice: we store raw, finished games only. Standings (both the
+// NHL's real point system and our "true" system) are computed on read from
+// this table (see lib/standings.ts). We deliberately do NOT store a running
+// points/standings table — that would drift from the source of truth the
+// moment the points logic changes or a game result gets corrected.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Neon: use a separate direct (non-pooled) connection for migrations.
+  directUrl = env("DIRECT_URL")
+}
+
+enum PeriodType {
+  REG // decided in regulation
+  OT  // decided in overtime
+  SO  // decided in a shootout
+}
+
+model Game {
+  // NHL's own game id (e.g. 2025020123) — used as our primary key so
+  // re-syncing the same day is a safe upsert, never a duplicate.
+  id String @id
+
+  season   Int // e.g. 20252026
+  gameType Int // 2 = regular season, 3 = playoffs. We only display gameType 2.
+
+  gameDate DateTime // UTC start time, from the NHL API
+
+  homeTeam String // tri-code, e.g. "TOR"
+  awayTeam String // tri-code, e.g. "BOS"
+
+  homeScore Int
+  awayScore Int
+
+  periodType PeriodType // how the game was decided — this drives points
+
+  syncedAt DateTime @updatedAt
+
+  @@index([season, gameType])
+  @@index([gameDate])
+}
