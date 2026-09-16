@@ -76,14 +76,22 @@ a {
   color: var(--assist-teal);
 }
 
-/* View toggle + season dropdown */
+/* View toggle + season dropdown. Sticks to the top of the viewport while
+   scrolling so the reader can flip True/Real/Diff from anywhere on the page
+   and watch the division they're looking at change in place. */
 .controls {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px 24px;
-  margin: 28px 0 20px;
+  margin: 28px 0 12px;
+  padding: 12px 0;
+  background: var(--rink-navy);
+  border-bottom: 1px solid var(--line);
 }
 
 /* Segmented toggle */
@@ -149,10 +157,23 @@ a {
   border-color: var(--muted);
 }
 
+/* Stack every view's note in one cell; only the active one is visible, but
+   the block keeps the height of the tallest so tables never shift. */
+.system-notes {
+  display: grid;
+  margin: 0 0 16px;
+}
+
 .system-note {
+  grid-area: 1 / 1;
+  visibility: hidden;
   color: var(--muted);
   font-size: 0.85rem;
-  margin: 0 0 16px;
+  margin: 0;
+}
+
+.system-note[data-active="true"] {
+  visibility: visible;
 }
 
 .empty-note {
@@ -238,6 +259,7 @@ a {
   color: var(--muted);
   padding: 8px 10px;
   border-bottom: 1px solid var(--line);
+  white-space: nowrap; /* same header height in every view, at every width */
 }
 
 .standings th:first-child,
@@ -287,9 +309,9 @@ a {
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.06em;
-  padding: 2px 6px;
+  padding: 1px 6px;
   border-radius: 4px;
-  line-height: 1.3;
+  line-height: 1.2; /* kept shorter than the row text so tagged rows aren't taller */
 }
 
 .tag-wildcard {

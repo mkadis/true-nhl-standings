@@ -23,7 +23,7 @@ const VIEW_LABELS: Record<View, string> = {
 const SYSTEM_NOTES: Record<View, string> = {
   true: "3 pts regulation win · 2 pts OT/SO win · 1 pt OT/SO loss · 0 pts regulation loss.",
   real: "The NHL's actual system: 2 pts for any win · 1 pt OT/SO loss · 0 pts regulation loss.",
-  diff: "How many spots each team moves within its division between the two systems, and whether its playoff position changes. Positive means the True system ranks them higher.",
+  diff: "Spots each team moves within its division, and its playoff position, going from the Real system to the True one. Positive means the True system ranks them higher.",
 };
 
 // All three tables are computed on the server (see StandingsPage) and
@@ -101,7 +101,17 @@ export function StandingsView({
         <SeasonSelect options={seasonOptions} currentId={seasonId} />
       </div>
 
-      <p className="system-note">{SYSTEM_NOTES[view]}</p>
+      {/* All three notes are rendered stacked in the same grid cell so the
+          block is always as tall as the longest one — switching views never
+          shifts the tables below, which matters when the reader is scrolled
+          down comparing one division across systems. */}
+      <div className="system-notes">
+        {VIEWS.map((v) => (
+          <p key={v} className="system-note" data-active={view === v} aria-hidden={view !== v}>
+            {SYSTEM_NOTES[v]}
+          </p>
+        ))}
+      </div>
 
       {gamesPlayed === 0 ? (
         <p className="empty-note">No games recorded for this season yet.</p>

@@ -44,7 +44,7 @@ export function DiffTable({ rows, caption }: { rows: DiffRow[]; caption: string 
             <th>Real rank</th>
             <th>True rank</th>
             <th>Change</th>
-            <th>Playoffs (Real → True)</th>
+            <th>Playoffs</th>
           </tr>
         </thead>
         <tbody>
