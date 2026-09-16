@@ -54,14 +54,12 @@ export async function StandingsPage({ seasonId, embed = false }: Props) {
             <>
               <h1>True NHL Standings</h1>
               <p>
-                The NHL awards <strong>2 points for any win</strong> and{" "}
-                <strong>1 point for an overtime or shootout loss</strong> — so two
-                different teams can lose the same number of games and end up with a
-                very different record. True NHL Standings recalculates the whole
-                league using a point system where a regulation win is worth more
-                than squeaking out extra time, and two losses never add up to more
-                than one win: <strong>3 / 2 / 1 / 0</strong> for a regulation win,
-                OT/SO win, OT/SO loss, and regulation loss.
+                True NHL Standings awards <strong>3 points</strong> for a regulation
+                win, <strong>2 points</strong> for an overtime or shootout win,{" "}
+                <strong>1 point</strong> for an overtime or shootout loss, and nothing
+                for a regulation loss. We believe two losses should never equal a
+                win. This is the system the PWHL and KHL already use — it's just
+                better for hockey.
               </p>
             </>
           )}
