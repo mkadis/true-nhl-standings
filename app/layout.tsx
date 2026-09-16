@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Barlow_Condensed, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -20,10 +21,16 @@ export const metadata: Metadata = {
     "NHL standings recalculated so a regulation win actually counts for more than an overtime loss.",
 };
 
+// Google Analytics measurement id (G-XXXXXXXXXX). Set NEXT_PUBLIC_GA_ID in
+// the environment to turn tracking on; leave it unset (e.g. locally) and no
+// analytics script is loaded at all.
+const gaId = process.env.NEXT_PUBLIC_GA_ID;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={`${display.variable} ${body.variable}`}>{children}</body>
+      {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
   );
 }

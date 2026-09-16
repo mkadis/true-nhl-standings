@@ -81,7 +81,9 @@ Seasons back to 2021–22 work as-is. 2020–21 used one-off divisions
 1. Push this repo to GitHub.
 2. Import it into [Vercel](https://vercel.com) — it'll detect Next.js
    automatically. Add `DATABASE_URL` and `DIRECT_URL` as environment
-   variables in the Vercel project settings (same values as your `.env`).
+   variables in the Vercel project settings (same values as your `.env`),
+   plus `NEXT_PUBLIC_GA_ID` with your Google Analytics measurement id
+   (`G-XXXXXXXXXX`) to turn on tracking. Leave it unset to disable analytics.
 3. **Turn on the score sync:** in your GitHub repo, go to Settings → Secrets
    and variables → Actions, and add a `DATABASE_URL` secret (use the pooled
    Neon string). The workflow in `.github/workflows/sync-scores.yml` will
