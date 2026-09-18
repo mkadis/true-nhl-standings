@@ -58,8 +58,8 @@ export async function StandingsPage({ seasonId, embed = false }: Props) {
                 win, <strong>2 points</strong> for an overtime or shootout win,{" "}
                 <strong>1 point</strong> for an overtime or shootout loss, and nothing
                 for a regulation loss. We believe two losses should never equal a
-                win. This is the system the PWHL and KHL already use — it's just
-                better for hockey.
+                win. This is the system the PWHL uses today and the KHL once did —
+                it's just better for hockey.
               </p>
             </>
           )}
