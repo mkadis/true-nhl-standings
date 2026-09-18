@@ -372,6 +372,19 @@ a {
   line-height: 1.6;
 }
 
+.footer-note p {
+  margin: 0 0 12px;
+}
+
+.footer-note a {
+  color: var(--assist-teal);
+  text-decoration: none;
+}
+
+.footer-note a:hover {
+  text-decoration: underline;
+}
+
 /* Embed widget: same tokens, tighter spacing, no masthead prose */
 .embed .page {
   padding: 20px;

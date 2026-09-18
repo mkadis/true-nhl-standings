@@ -76,12 +76,18 @@ export async function StandingsPage({ seasonId, embed = false }: Props) {
         />
 
         {!embed && (
-          <p className="footer-note">
-            Game data from the NHL. Standings are recomputed from every final
-            score of the season, not adjusted from the NHL's own standings — so
-            the "Real" view here should match nhl.com, and the "True" view shows
-            what the table looks like under a stricter point system.
-          </p>
+          <footer className="footer-note">
+            <p>
+              Game data from the NHL. Standings are recomputed from every final
+              score of the season, not adjusted from the NHL's own standings — so
+              the "Real" view here should match nhl.com, and the "True" view shows
+              what the table looks like under a stricter point system.
+            </p>
+            <p>
+              Questions, corrections, collaborations, or sponsorship inquiries:{" "}
+              <a href="mailto:info@truenhlstandings.com">info@truenhlstandings.com</a>
+            </p>
+          </footer>
         )}
       </div>
     </div>
