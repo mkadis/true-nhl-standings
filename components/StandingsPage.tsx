@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { StandingsView } from "@/components/StandingsView";
 import type { SeasonOption } from "@/components/SeasonSelect";
 import { getAvailableSeasons, getGamesForSeason } from "@/lib/games";
@@ -52,7 +53,16 @@ export async function StandingsPage({ seasonId, embed = false }: Props) {
             </h1>
           ) : (
             <>
-              <h1>True NHL Standings</h1>
+              <h1 className="wordmark">
+                <Image
+                  src="/true-nhl-standings-logo.png"
+                  alt=""
+                  width={320}
+                  height={125}
+                  priority
+                />
+                True NHL Standings
+              </h1>
               <p>
                 True NHL Standings awards <strong>3 points</strong> for a regulation
                 win, <strong>2 points</strong> for an overtime or shootout win,{" "}

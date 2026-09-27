@@ -53,6 +53,20 @@ a {
   margin: 0 0 12px;
 }
 
+/* Logo + title lock up as one unit; the logo scales with the title text so
+   the pair stays balanced from phone to desktop. */
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.wordmark img {
+  width: auto;
+  height: 0.8em;
+  flex: none;
+}
+
 .masthead p {
   max-width: 60ch;
   color: var(--muted);
