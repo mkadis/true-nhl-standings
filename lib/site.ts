@@ -7,7 +7,13 @@
 
 import type { Metadata } from "next";
 
-/** Absolute URLs are required for social share previews. */
+/**
+ * Absolute URLs are required for social share previews, and this must match
+ * the domain the site is actually *served* from — i.e. whichever of the bare
+ * domain / www is set as primary in Vercel, with the other redirecting to it.
+ * If they disagree, scrapers fetch one URL and find a canonical pointing at
+ * the other, and some report that as an error.
+ */
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://truenhlstandings.ca";
 
 export const SITE_NAME = "True NHL Standings";
