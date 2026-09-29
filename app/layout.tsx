@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Barlow_Condensed, Inter } from "next/font/google";
+import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const display = Barlow_Condensed({
@@ -16,9 +17,28 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "True NHL Standings",
-  description:
-    "NHL standings recalculated so a regulation win actually counts for more than an overtime loss.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    // Season pages set their own title; this frames it consistently.
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: "/",
+    locale: "en_US",
+    images: OG_IMAGE,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: OG_IMAGE,
+  },
 };
 
 // Google Analytics measurement id (G-XXXXXXXXXX). Set NEXT_PUBLIC_GA_ID in
