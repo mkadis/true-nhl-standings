@@ -32,3 +32,19 @@ export async function getAvailableSeasons(): Promise<number[]> {
   ids.add(currentSeasonId());
   return Array.from(ids).sort((a, b) => b - a);
 }
+
+/**
+ * When we last recorded a game result for a season — the newest `syncedAt`
+ * of its games, or null if the season has no games yet.
+ *
+ * This is data freshness, not "when the sync last ran": if no games have
+ * finished since the last run, the sync writes nothing and this stays put,
+ * which is the honest thing to show a reader.
+ */
+export async function getLastUpdatedForSeason(seasonId: number): Promise<Date | null> {
+  const result = await prisma.game.aggregate({
+    where: { season: seasonId, gameType: REGULAR_SEASON_GAME_TYPE },
+    _max: { syncedAt: true },
+  });
+  return result._max.syncedAt;
+}

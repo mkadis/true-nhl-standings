@@ -1,7 +1,8 @@
 import Image from "next/image";
+import { LastUpdated } from "@/components/LastUpdated";
 import { StandingsView } from "@/components/StandingsView";
 import type { SeasonOption } from "@/components/SeasonSelect";
-import { getAvailableSeasons, getGamesForSeason } from "@/lib/games";
+import { getAvailableSeasons, getGamesForSeason, getLastUpdatedForSeason } from "@/lib/games";
 import { currentSeasonId, formatSeason } from "@/lib/seasons";
 import { computeRankDiff, computeStandings, groupByDivision } from "@/lib/standings";
 import { teamsForSeason } from "@/lib/teams";
@@ -15,8 +16,14 @@ interface Props {
 // list of seasons for the dropdown, and renders the page shell. The embed
 // variant drops the explanatory prose so it fits in a sidebar.
 export async function StandingsPage({ seasonId, embed = false }: Props) {
-  const [games, seasons] = await Promise.all([getGamesForSeason(seasonId), getAvailableSeasons()]);
   const current = currentSeasonId();
+  const [games, seasons, lastUpdated] = await Promise.all([
+    getGamesForSeason(seasonId),
+    getAvailableSeasons(),
+    // Only meaningful for the season in progress: for a finished season the
+    // timestamp is just when it happened to get backfilled.
+    seasonId === current ? getLastUpdatedForSeason(seasonId) : Promise.resolve(null),
+  ]);
 
   // A season URL we don't have data for still gets listed, so the dropdown
   // always shows what the page is displaying.
@@ -67,13 +74,22 @@ export async function StandingsPage({ seasonId, embed = false }: Props) {
                 True NHL Standings awards <strong>3 points</strong> for a regulation
                 win, <strong>2 points</strong> for an overtime or shootout win,{" "}
                 <strong>1 point</strong> for an overtime or shootout loss, and nothing
-                for a regulation loss. We believe two losses should never equal a
-                win. This is the system the PWHL uses today and the KHL once did —
-                it's just better for hockey.
+                for a regulation loss. We believe teams should be rewarded for
+                winning in regulation: regulation wins count for more than overtime
+                wins, and overtime wins count for more than overtime losses. This is
+                the system the PWHL uses today and the KHL once did — it's just
+                better for hockey.
               </p>
             </>
           )}
-          <p className="season-meta">{seasonMeta}</p>
+          <p className="season-meta">
+            {seasonMeta}
+            {lastUpdated && (
+              <>
+                {" · "}Updated <LastUpdated iso={lastUpdated.toISOString()} />
+              </>
+            )}
+          </p>
         </header>
 
         <StandingsView
