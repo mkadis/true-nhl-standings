@@ -8,7 +8,7 @@
 import type { Metadata } from "next";
 
 /** Absolute URLs are required for social share previews. */
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://truenhlstandings.com";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://truenhlstandings.ca";
 
 export const SITE_NAME = "True NHL Standings";
 

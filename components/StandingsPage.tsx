@@ -54,8 +54,8 @@ export async function StandingsPage({ seasonId, embed = false }: Props) {
           {embed ? (
             <h1>
               True NHL Standings ·{" "}
-              <a href="https://truenhlstandings.com" style={{ fontSize: "0.6em", color: "var(--muted)" }}>
-                truenhlstandings.com
+              <a href="https://truenhlstandings.ca" style={{ fontSize: "0.6em", color: "var(--muted)" }}>
+                truenhlstandings.ca
               </a>
             </h1>
           ) : (
@@ -111,7 +111,7 @@ export async function StandingsPage({ seasonId, embed = false }: Props) {
             </p>
             <p>
               Questions, corrections, collaborations, or sponsorship inquiries:{" "}
-              <a href="mailto:info@truenhlstandings.com">info@truenhlstandings.com</a>
+              <a href="mailto:info@truenhlstandings.ca">info@truenhlstandings.ca</a>
             </p>
           </footer>
         )}

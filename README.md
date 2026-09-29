@@ -102,7 +102,7 @@ Anyone can drop the standings (with all three toggles) into their own page:
 
 ```html
 <iframe
-  src="https://truenhlstandings.com/embed"
+  src="https://truenhlstandings.ca/embed"
   width="100%"
   height="640"
   style="border: none;"
