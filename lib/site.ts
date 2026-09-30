@@ -20,8 +20,7 @@ export const SITE_NAME = "True NHL Standings";
 
 export const SITE_DESCRIPTION =
   "NHL standings with a better point system: 3 points for a regulation win, " +
-  "2 for an overtime or shootout win, 1 for an OT/SO loss. Two losses should " +
-  "never equal a win.";
+  "2 for an OT or SO win, 1 for an OT/SO loss.";
 
 export const OG_IMAGE: NonNullable<NonNullable<Metadata["openGraph"]>["images"]> = [
   {
